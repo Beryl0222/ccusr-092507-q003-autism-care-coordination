@@ -1,0 +1,9 @@
+{
+  "event_id": "092507-003-sample-001",
+  "event_type": "ASSESSMENT_ACCEPTED",
+  "aggregate_type": "child_case",
+  "aggregate_id": "autism_care_coordination-001",
+  "occurred_at": "2026-09-24T12:00:00+08:00",
+  "version": 1,
+  "payload": {}
+}

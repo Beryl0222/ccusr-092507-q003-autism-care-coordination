@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "孤独症干预协同档案领域事件",
+  "type": "object",
+  "required": [
+    "event_id",
+    "event_type",
+    "aggregate_type",
+    "aggregate_id",
+    "occurred_at",
+    "version",
+    "payload"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "ASSESSMENT_ACCEPTED",
+        "PLAN_APPROVED",
+        "SERVICE_RECORDED",
+        "RISK_ACTION_TAKEN",
+        "REVIEW_COMPLETED"
+      ]
+    },
+    "aggregate_type": {
+      "type": "string",
+      "enum": [
+        "child_case",
+        "care_plan",
+        "service_commitment",
+        "review_cycle"
+      ]
+    },
+    "aggregate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "payload": {
+      "type": "object"
+    }
+  },
+  "payload_required_by_event": {
+    "PLAN_APPROVED": [
+      "assessment_version",
+      "guardian_consent"
+    ],
+    "SERVICE_RECORDED": [
+      "plan_version",
+      "provider_id"
+    ],
+    "RISK_ACTION_TAKEN": [
+      "reason",
+      "review_due_at"
+    ]
+  },
+  "additionalProperties": false
+}
