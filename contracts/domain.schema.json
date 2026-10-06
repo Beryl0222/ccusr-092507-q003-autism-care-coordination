@@ -20,10 +20,25 @@
       "type": "string",
       "enum": [
         "ASSESSMENT_ACCEPTED",
+        "FAMILY_PRIORITY_RECORDED",
         "PLAN_APPROVED",
+        "PLAN_REVISED",
+        "GOAL_DEFINED",
+        "GOAL_RESTATEMENT_PROPOSED",
+        "GOAL_RESTATEMENT_DISPUTED",
+        "GOAL_REVIEW_FLAGGED",
+        "GOAL_REVIEW_RESOLVED",
+        "OBSERVATION_RECORDED",
+        "SERVICE_CLAIMED",
         "SERVICE_RECORDED",
         "RISK_ACTION_TAKEN",
-        "REVIEW_COMPLETED"
+        "RISK_AUTHORIZATION_COMPLETED",
+        "RISK_INDEPENDENT_REVIEW_COMPLETED",
+        "REFERRAL_ISSUED",
+        "REFERRAL_RESOLVED",
+        "REVIEW_COMPLETED",
+        "UPLOAD_DISPUTED",
+        "OVERDUE_REMINDER_FIRED"
       ]
     },
     "aggregate_type": {
@@ -31,6 +46,7 @@
       "enum": [
         "child_case",
         "care_plan",
+        "functional_goal",
         "service_commitment",
         "review_cycle"
       ]
@@ -51,19 +67,177 @@
       "type": "object"
     }
   },
+  "aggregate_by_event": {
+    "ASSESSMENT_ACCEPTED": "child_case",
+    "FAMILY_PRIORITY_RECORDED": "child_case",
+    "RISK_ACTION_TAKEN": "child_case",
+    "RISK_AUTHORIZATION_COMPLETED": "child_case",
+    "RISK_INDEPENDENT_REVIEW_COMPLETED": "child_case",
+    "REFERRAL_ISSUED": "child_case",
+    "REFERRAL_RESOLVED": "child_case",
+    "UPLOAD_DISPUTED": "child_case",
+    "OVERDUE_REMINDER_FIRED": "child_case",
+    "PLAN_APPROVED": "care_plan",
+    "PLAN_REVISED": "care_plan",
+    "GOAL_DEFINED": "functional_goal",
+    "GOAL_RESTATEMENT_PROPOSED": "functional_goal",
+    "GOAL_RESTATEMENT_DISPUTED": "functional_goal",
+    "GOAL_REVIEW_FLAGGED": "functional_goal",
+    "GOAL_REVIEW_RESOLVED": "functional_goal",
+    "OBSERVATION_RECORDED": "functional_goal",
+    "SERVICE_CLAIMED": "service_commitment",
+    "SERVICE_RECORDED": "service_commitment",
+    "REVIEW_COMPLETED": "review_cycle"
+  },
   "payload_required_by_event": {
+    "ASSESSMENT_ACCEPTED": [
+      "case_id",
+      "scale",
+      "scale_version",
+      "scale_result",
+      "key_change"
+    ],
+    "FAMILY_PRIORITY_RECORDED": [
+      "case_id",
+      "priorities"
+    ],
     "PLAN_APPROVED": [
+      "case_id",
+      "plan_version",
       "assessment_version",
-      "guardian_consent"
+      "guardian_consent",
+      "methods",
+      "service_frequency"
+    ],
+    "PLAN_REVISED": [
+      "case_id",
+      "plan_version",
+      "supersedes_version",
+      "reason"
+    ],
+    "GOAL_DEFINED": [
+      "case_id",
+      "goal_id",
+      "plan_version",
+      "statement",
+      "linked_assessment_version",
+      "owner"
+    ],
+    "GOAL_RESTATEMENT_PROPOSED": [
+      "case_id",
+      "goal_id",
+      "proposed_by",
+      "proposed_text"
+    ],
+    "GOAL_RESTATEMENT_DISPUTED": [
+      "case_id",
+      "goal_id",
+      "held_texts"
+    ],
+    "GOAL_REVIEW_FLAGGED": [
+      "case_id",
+      "goal_id",
+      "assessment_version",
+      "reason"
+    ],
+    "GOAL_REVIEW_RESOLVED": [
+      "case_id",
+      "goal_id",
+      "resolution",
+      "statement",
+      "resolved_by"
+    ],
+    "OBSERVATION_RECORDED": [
+      "case_id",
+      "goal_id",
+      "observer_kind",
+      "observer_id",
+      "content",
+      "plan_version",
+      "observed_at"
+    ],
+    "SERVICE_CLAIMED": [
+      "case_id",
+      "service_slot_id",
+      "provider_id",
+      "plan_version"
     ],
     "SERVICE_RECORDED": [
-      "plan_version",
-      "provider_id"
+      "case_id",
+      "service_slot_id",
+      "provider_id",
+      "plan_version"
     ],
     "RISK_ACTION_TAKEN": [
+      "case_id",
+      "actor_id",
       "reason",
-      "review_due_at"
+      "minimal_action",
+      "authorization_status",
+      "authorization_due_at",
+      "independent_review_due_at"
+    ],
+    "RISK_AUTHORIZATION_COMPLETED": [
+      "case_id",
+      "risk_event_id",
+      "authorized_by"
+    ],
+    "RISK_INDEPENDENT_REVIEW_COMPLETED": [
+      "case_id",
+      "risk_event_id",
+      "reviewer_id",
+      "finding"
+    ],
+    "REFERRAL_ISSUED": [
+      "case_id",
+      "referral_id",
+      "concern",
+      "target_specialty"
+    ],
+    "REFERRAL_RESOLVED": [
+      "case_id",
+      "referral_id",
+      "outcome"
+    ],
+    "REVIEW_COMPLETED": [
+      "case_id",
+      "review_id",
+      "plan_version",
+      "window_from",
+      "window_to"
+    ],
+    "UPLOAD_DISPUTED": [
+      "case_id",
+      "idempotency_key",
+      "original_event_id",
+      "reason"
+    ],
+    "OVERDUE_REMINDER_FIRED": [
+      "case_id",
+      "reminder_key",
+      "due_at"
     ]
+  },
+  "payload_enums": {
+    "OBSERVATION_RECORDED": {
+      "observer_kind": [
+        "family",
+        "professional"
+      ]
+    },
+    "RISK_ACTION_TAKEN": {
+      "authorization_status": [
+        "emergency_pending",
+        "pre_authorized"
+      ]
+    },
+    "GOAL_REVIEW_RESOLVED": {
+      "resolution": [
+        "kept",
+        "revised",
+        "retired"
+      ]
+    }
   },
   "additionalProperties": false
 }

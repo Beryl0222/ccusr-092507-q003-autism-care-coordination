@@ -5,5 +5,14 @@
   "aggregate_id": "autism_care_coordination-001",
   "occurred_at": "2026-09-24T12:00:00+08:00",
   "version": 1,
-  "payload": {}
+  "payload": {
+    "case_id": "autism_care_coordination-001",
+    "scale": "CARS2-CN",
+    "scale_version": "CARS2-CN-2026.0",
+    "scale_result": {
+      "score": 34.0,
+      "notes": "由县域儿童保健机构双人评定，服务本身不作自动诊断"
+    },
+    "key_change": false
+  }
 }
