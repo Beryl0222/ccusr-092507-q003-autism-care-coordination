@@ -21,8 +21,16 @@
       "enum": [
         "ASSESSMENT_ACCEPTED",
         "PLAN_APPROVED",
+        "GOAL_REPHRASING_PROPOSED",
+        "GOAL_RECONSIDERATION_FLAGGED",
+        "SERVICE_CLAIMED",
         "SERVICE_RECORDED",
+        "OBSERVATION_RECORDED",
+        "REFERRAL_ISSUED",
         "RISK_ACTION_TAKEN",
+        "RISK_AUTHORIZATION_RECORDED",
+        "RISK_INDEPENDENT_REVIEW_RECORDED",
+        "SCREENING_FLAG_RAISED",
         "REVIEW_COMPLETED"
       ]
     },
@@ -31,6 +39,8 @@
       "enum": [
         "child_case",
         "care_plan",
+        "service_slot",
+        "goal",
         "service_commitment",
         "review_cycle"
       ]
@@ -56,14 +66,57 @@
       "assessment_version",
       "guardian_consent"
     ],
+    "GOAL_REPHRASING_PROPOSED": [
+      "wording",
+      "source_party"
+    ],
+    "GOAL_RECONSIDERATION_FLAGGED": [
+      "goal_ids",
+      "trigger_event_id"
+    ],
+    "SERVICE_CLAIMED": [
+      "provider_id",
+      "slot_key"
+    ],
     "SERVICE_RECORDED": [
       "plan_version",
       "provider_id"
     ],
+    "OBSERVATION_RECORDED": [
+      "observer_type",
+      "observer_id"
+    ],
+    "REFERRAL_ISSUED": [
+      "issue",
+      "target_specialty"
+    ],
     "RISK_ACTION_TAKEN": [
       "reason",
       "review_due_at"
+    ],
+    "RISK_AUTHORIZATION_RECORDED": [
+      "risk_event_id",
+      "guardian_consent"
+    ],
+    "RISK_INDEPENDENT_REVIEW_RECORDED": [
+      "risk_event_id",
+      "reviewer_id"
+    ],
+    "SCREENING_FLAG_RAISED": [
+      "instrument",
+      "threshold"
+    ],
+    "REVIEW_COMPLETED": [
+      "plan_version_at_review"
     ]
+  },
+  "payload_field_rules": {
+    "assessment_version": "positive_integer",
+    "plan_version": "positive_integer",
+    "plan_version_at_review": "positive_integer",
+    "guardian_consent": "boolean",
+    "review_due_at": "timestamp_timezone",
+    "goal_ids": "non_empty_string_list"
   },
   "additionalProperties": false
 }

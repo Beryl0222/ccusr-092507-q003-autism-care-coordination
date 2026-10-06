@@ -42,6 +42,49 @@ class ContractTests(unittest.TestCase):
         issues = validate_event(event, self.schema)
         self.assertIn(("event_type", "unsupported_value"), [(issue.field, issue.code) for issue in issues])
 
+    def test_goal_flag_requires_non_empty_goal_list(self) -> None:
+        event = dict(
+            self.sample,
+            event_type="GOAL_RECONSIDERATION_FLAGGED",
+            aggregate_type="care_plan",
+            payload={"goal_ids": [], "trigger_event_id": "ev-1"},
+        )
+        issues = validate_event(event, self.schema)
+        self.assertIn(
+            ("payload.goal_ids", "non_empty_string_list"),
+            [(issue.field, issue.code) for issue in issues],
+        )
+
+    def test_risk_due_time_requires_timezone(self) -> None:
+        event = dict(
+            self.sample,
+            event_type="RISK_ACTION_TAKEN",
+            aggregate_type="child_case",
+            payload={"reason": "自伤", "review_due_at": "2026-09-25T12:00:00"},
+        )
+        issues = validate_event(event, self.schema)
+        self.assertIn(("payload.review_due_at", "timezone_required"), [(i.field, i.code) for i in issues])
+
+    def test_consent_must_be_boolean(self) -> None:
+        event = dict(
+            self.sample,
+            event_type="PLAN_APPROVED",
+            aggregate_type="care_plan",
+            payload={"assessment_version": 1, "guardian_consent": "yes"},
+        )
+        issues = validate_event(event, self.schema)
+        self.assertIn(("payload.guardian_consent", "boolean_required"), [(i.field, i.code) for i in issues])
+
+    def test_plan_version_must_be_positive_integer(self) -> None:
+        event = dict(
+            self.sample,
+            event_type="SERVICE_RECORDED",
+            aggregate_type="service_commitment",
+            payload={"plan_version": 0, "provider_id": "org-A"},
+        )
+        issues = validate_event(event, self.schema)
+        self.assertIn(("payload.plan_version", "positive_integer"), [(i.field, i.code) for i in issues])
+
 
 if __name__ == "__main__":
     unittest.main()
